@@ -1,0 +1,7 @@
+require 'jsonapi-ruby-deserializer/resource'
+require 'jsonapi-ruby-deserializer/document'
+require 'jsonapi-ruby-deserializer/links'
+require 'jsonapi-ruby-deserializer/meta'
+require 'jsonapi-ruby-deserializer/relationship'
+require 'jsonapi-ruby-deserializer/data'
+require 'jsonapi-ruby-deserializer/errors'
