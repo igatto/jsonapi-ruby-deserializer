@@ -5,6 +5,12 @@ Makes work with [JSON::API compound documents](https://jsonapi.org/format/#docum
 [![CircleCI](https://circleci.com/gh/igatto/jsonapi-ruby-deserializer/tree/main.svg?style=shield&circle-token=20af9c492f5ee96fb66bffb1236b11e979549d54)](https://circleci.com/gh/igatto/jsonapi-ruby-deserializer/tree/main)&emsp;&emsp;
 
 ## Installation
+```
+gem 'jsonapi-ruby-deserializer'
+```
+```
+gem install jsonapi-ruby-deserializer
+```
 
 ## Usage
 ### Simple example:
