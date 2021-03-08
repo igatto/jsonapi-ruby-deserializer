@@ -10,6 +10,7 @@ describe JSONAPI::Ruby::Deserializer::Document do
 
   context 'document contains multiple resources' do
     it 'checks every feature' do
+      expect(parsed_document.data.type).to eq('articles')
       expect(parsed_document.data.title).to eq('Lorem Ipsum')
     end
   end

@@ -15,8 +15,8 @@ describe JSONAPI::Ruby::Deserializer::Document do
       expect(parsed_document.meta.authors).to eq(['James Smith', 'Maria Hernandez'])
       expect(parsed_document.data.attributes).to eq({'title' => 'JSON:API paints my bikeshed!'})
       expect(parsed_document.data.title).to eq('JSON:API paints my bikeshed!')
-      expect(parsed_document.data.author.first_name).to eq('Dan')
-      expect(parsed_document.data.comments[0].body).to eq('First!')
+      expect(parsed_document.data.author.data.first_name).to eq('Dan')
+      expect(parsed_document.data.comments.data[0].body).to eq('First!')
     end
   end
 end

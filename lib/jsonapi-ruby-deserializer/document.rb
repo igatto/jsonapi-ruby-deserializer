@@ -57,7 +57,17 @@ module JSONAPI
           (Array(@data) + @included).each do |resource|
             next if resource.relationships.nil?
 
-            resource.link_data!(@index)
+            resource.relationships.each do |relation|
+              resource.send(relation.to_sym).data = merge_relations!(resource.send(relation.to_sym).data)
+            end
+          end
+        end
+
+        def merge_relations!(data)
+          if data.kind_of?(Array)
+            data.map { |element| index[[element.type, element.id]] }
+          else
+            index[[data.type, data.id]]
           end
         end
       end

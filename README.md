@@ -17,8 +17,11 @@ gem install jsonapi-ruby-deserializer
 ```ruby
 hash = {"data"=>{"type"=>"articles", "attributes"=>{"title"=>"Lorem Ipsum"}}}
 document = JSONAPI::Ruby::Deserializer::Document.new(hash)
+
+document.data.type
+# => "articles"
 document.data.title
-=> "Lorem Ipsum"
+# => "Lorem Ipsum"
 ```
 
 ### Advanced example:
@@ -29,29 +32,50 @@ document = JSONAPI::Ruby::Deserializer::Document.new(hash)
 
 #### Attributes
 ```ruby
-document.data[0].attributes
-# => {"title"=>"JSON:API paints my bikeshed!"}
+document.data[0].id
+# => "1"
+
+document.data[0].type
+# => "articles"
 
 document.data[0].title
 # => "JSON:API paints my bikeshed!"
+
+document.data[0].attributes
+# => {"title"=>"JSON:API paints my bikeshed!"}
+
+document.data[0].comments.data[0].body
+# => "First!"
+
+document.data[0].comments.data[0].attributes
+# => {"body"=>"First!"}
 ```
 
 #### One-to-one relation
 ```ruby
-document.data[0].author.first_name
+document.data[0].author.data.id
+# => "9"
+
+document.data[0].author.data.first_name
 # => "Dan"
 ```
 
 #### One-to-many relation
 ```ruby
-document.data[0].comments[0].body
+document.data[0].comments.data[0].id
+# => "5"
+
+document.data[0].comments.data[0].body
 # => "First!"
 ```
 
-#### Access to relation through another relation
+#### Nested relation
 ```ruby
-document.data[0].comments[1].author.first_name
+document.data[0].comments.data[1].author.data.first_name
 # => "Dan"
+
+document.data[0].comments.data[1].author.data.attributes
+# => {"first_name"=>"Dan", "last_name"=>"Gebhardt", "twitter"=>"dgeb"}
 ```
 
 #### Meta
@@ -65,8 +89,17 @@ document.meta.authors
 document.links.self
 # => "http://example.com/articles"
 
-document.data[0].relationships['author'].links.self
+document.data[0].author.links.self
 # => "http://example.com/articles/1/relationships/author"
+
+document.data[0].author.data.links.self
+# => "http://example.com/people/9"
+```
+
+#### List relationships
+```ruby
+document.data[0].relationships
+# => ["author", "comments"]
 ```
 
 ## License
