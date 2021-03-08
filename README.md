@@ -20,8 +20,10 @@ document = JSONAPI::Ruby::Deserializer::Document.new(hash)
 
 document.data.type
 # => "articles"
-document.data.title
+document.data.attributes.title
 # => "Lorem Ipsum"
+document.data.attributes.to_h
+# => {"title"=>"Lorem Ipsum"}
 ```
 
 ### Advanced example:
@@ -30,58 +32,79 @@ hash = {"meta"=>{"license"=>"MIT", "authors"=>["James Smith", "Maria Hernandez"]
 document = JSONAPI::Ruby::Deserializer::Document.new(hash)
 ```
 
-#### Attributes
+#### Data
 ```ruby
 document.data[0].id
 # => "1"
 
 document.data[0].type
 # => "articles"
+```
 
-document.data[0].title
+#### Attributes
+```ruby
+document.data[0].attributes.title
 # => "JSON:API paints my bikeshed!"
 
-document.data[0].attributes
+document.data[0].attributes.to_h
 # => {"title"=>"JSON:API paints my bikeshed!"}
 
-document.data[0].comments.data[0].body
+document.data[0].relationships.comments.data[0].attributes.body
 # => "First!"
 
-document.data[0].comments.data[0].attributes
+document.data[0].relationships.comments.data[0].attributes.to_h
 # => {"body"=>"First!"}
 ```
 
-#### One-to-one relation
+#### One-to-one relations
 ```ruby
-document.data[0].author.data.id
+document.data[0].relationships.author.data.id
 # => "9"
 
-document.data[0].author.data.first_name
+document.data[0].relationships.author.data.attributes.first_name
 # => "Dan"
+
+document.data[0].relationships.author.data.attributes.to_h
+# => {"first_name"=>"Dan", "last_name"=>"Gebhardt", "twitter"=>"dgeb"}
 ```
 
-#### One-to-many relation
+#### One-to-many relations
 ```ruby
-document.data[0].comments.data[0].id
+document.data[0].relationships.comments.data[0].id
 # => "5"
 
-document.data[0].comments.data[0].body
+document.data[0].relationships.comments.data[0].attributes.body
 # => "First!"
+
+document.data[0].relationships.comments.data[0].attributes.to_h
+# => {"body"=>"First!"}
 ```
 
-#### Nested relation
+#### Nested relations
 ```ruby
-document.data[0].comments.data[1].author.data.first_name
+document.data[0].relationships.comments.data[1].relationships.author.data.id
+# => "9"
+
+document.data[0].relationships.comments.data[1].relationships.author.data.attributes.first_name
 # => "Dan"
 
-document.data[0].comments.data[1].author.data.attributes
+document.data[0].relationships.comments.data[1].relationships.author.data.attributes.to_h
 # => {"first_name"=>"Dan", "last_name"=>"Gebhardt", "twitter"=>"dgeb"}
+```
+
+#### List relationships
+```ruby
+document.data[0].relationships.to_a
+# => ["author", "comments"]
 ```
 
 #### Meta
 ```ruby
 document.meta.authors
 # => ["James Smith", "Maria Hernandez"]
+
+document.meta.to_h
+# => {"license"=>"MIT", "authors"=>["James Smith", "Maria Hernandez"]}
 ```
 
 #### Links
@@ -89,17 +112,23 @@ document.meta.authors
 document.links.self
 # => "http://example.com/articles"
 
-document.data[0].author.links.self
+document.data[0].relationships.author.links.self
 # => "http://example.com/articles/1/relationships/author"
 
-document.data[0].author.data.links.self
+document.data[0].relationships.author.data.links.self
 # => "http://example.com/people/9"
+
+document.data[0].relationships.author.data.links.to_h
+# => {"self"=>"http://example.com/people/9"}
 ```
 
-#### List relationships
+#### jsonapi
 ```ruby
-document.data[0].relationships
-# => ["author", "comments"]
+document.jsonapi.version
+# => "1.0"
+
+document.jsonapi.to_h
+# => {"version"=>"1.0"}
 ```
 
 ## License

@@ -1,4 +1,7 @@
 {
+  "jsonapi":{
+    "version": "1.0"
+  },
   "meta": {
     "license": "MIT",
     "authors": [
