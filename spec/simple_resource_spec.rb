@@ -4,14 +4,14 @@ require 'jsonapi-ruby-deserializer'
 require 'json'
 
 describe JSONAPI::Ruby::Deserializer::Document do
-  subject(:parsed_document) { JSONAPI::Ruby::Deserializer::Document.new(document) }
+  subject(:document) { JSONAPI::Ruby::Deserializer::Document.new(json) }
 
-  let(:document) { JSON.parse(File.open('spec/fixtures/simple_resource.json').read) }
+  let(:json) { JSON.parse(File.open('spec/fixtures/simple_resource.json').read) }
 
-  context 'document contains multiple resources' do
+  context 'document contains very simple resource' do
     it 'checks every feature' do
-      expect(parsed_document.data.type).to eq('articles')
-      expect(parsed_document.data.title).to eq('Lorem Ipsum')
+      expect(document.data.type).to eq('articles')
+      expect(document.data.meta.example).to eq('tag')
     end
   end
 end

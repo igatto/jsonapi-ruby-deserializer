@@ -4,19 +4,19 @@ require 'jsonapi-ruby-deserializer'
 require 'json'
 
 describe JSONAPI::Ruby::Deserializer::Document do
-  subject(:parsed_document) { JSONAPI::Ruby::Deserializer::Document.new(document) }
+  subject(:document) { JSONAPI::Ruby::Deserializer::Document.new(json) }
 
-  let(:document) { JSON.parse(File.open('spec/fixtures/singular_resource.json').read) }
+  let(:json) { JSON.parse(File.open('spec/fixtures/singular_resource.json').read) }
 
-  context 'document contains multiple resources' do
+  context 'document contains singular resource' do
     it 'checks every feature' do
-      expect(parsed_document.links.self).to eq('http://example.com/articles')
-      expect(parsed_document.meta.license).to eq('MIT')
-      expect(parsed_document.meta.authors).to eq(['James Smith', 'Maria Hernandez'])
-      expect(parsed_document.data.attributes).to eq({'title' => 'JSON:API paints my bikeshed!'})
-      expect(parsed_document.data.title).to eq('JSON:API paints my bikeshed!')
-      expect(parsed_document.data.author.data.first_name).to eq('Dan')
-      expect(parsed_document.data.comments.data[0].body).to eq('First!')
+      expect(document.links.self).to eq('http://example.com/articles')
+      expect(document.meta.license).to eq('MIT')
+      expect(document.meta.authors).to eq(['James Smith', 'Maria Hernandez'])
+      expect(document.data.attributes.title).to eq('JSON:API paints my bikeshed!')
+      expect(document.data.attributes.to_h).to eq({'title' => 'JSON:API paints my bikeshed!'})
+      expect(document.data.relationships.comments.data[0].id).to eq('5')
+      expect(document.data.relationships.comments.data[1].attributes.to_h).to eq({'body'=>'I like XML better'})
     end
   end
 end

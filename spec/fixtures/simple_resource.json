@@ -3,6 +3,9 @@
     "type": "articles",
     "attributes": {
       "title": "Lorem Ipsum"
+    },
+    "meta": {
+      "example": "tag"
     }
   }
 }

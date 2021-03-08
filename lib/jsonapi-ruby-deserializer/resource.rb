@@ -7,38 +7,39 @@ module JSONAPI
     module Deserializer
       class Resource
         include JSONAPI::Ruby::Deserializer::Parser
-        attr_accessor :id, :type, :attributes, :relationships, :links
+        attr_accessor :id, :type, :attributes, :relationships, :links, :meta
 
         def initialize(data)
           @id = data['id']
           @type = data['type']
-          @attributes = data['attributes']
+          @attributes = parse_attributes!(data['attributes'])
           @links = parse_links!(data['links'])
-          parse!(@attributes) if @attributes
-          parse_relationships!(data['relationships']) if data['relationships']
+          @meta = parse_meta!(data['meta'])
+          @relationships = parse_relationships!(data['relationships'])
         end
 
-        def parse_relationships!(relationships)
-          @relationships = []
-          relationships.map do |key, h|
-            @relationships << key
-            self.class.send(:attr_accessor, key)
-            instance_variable_set("@#{key}", Document.new(h))
-          end
+        def parse_relationships!(data)
+          return if data.nil? || data.empty?
+
+          Relationships.new(data)
         end
 
         def parse_links!(data)
-          return if data.nil?
+          return if data.nil? || data.empty?
 
           Links.new(data)
         end
 
-        def fetch_relation(data, index)
-          if data.kind_of?(Array)
-            data.map { |element| index[[element.type, element.id]] }
-          else
-            index[[data.type, data.id]]
-          end
+        def parse_meta!(data)
+          return if data.nil? || data.empty?
+
+          Meta.new(data)
+        end
+
+        def parse_attributes!(data)
+          return if data.nil? || data.empty?
+
+          Attributes.new(data)
         end
       end
     end
