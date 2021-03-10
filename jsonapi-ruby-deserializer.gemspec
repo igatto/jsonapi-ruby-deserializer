@@ -6,7 +6,7 @@ Gem::Specification.new do |spec|
   spec.author        = 'Grzegorz Płóciniak'
   spec.email         = 'grzegorzsend@gmail.com'
   spec.summary       = 'JSON API Ruby deserializer'
-  spec.description   = 'Makes work with JSON::API compound documents easy'
+  spec.description   = 'Makes work with JSON:API compound documents easy'
   spec.homepage      = 'https://github.com/igatto/jsonapi-ruby-deserializer'
   spec.license       = 'MIT'
 

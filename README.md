@@ -1,5 +1,5 @@
 # JSONAPI Ruby Deserializer
-Makes work with [JSON::API compound documents](https://jsonapi.org/format/#document-compound-documents) easy
+Makes work with [JSON:API compound documents](https://jsonapi.org/format/#document-compound-documents) easy
 
 ## Status
 [![CircleCI](https://circleci.com/gh/igatto/jsonapi-ruby-deserializer/tree/main.svg?style=shield&circle-token=20af9c492f5ee96fb66bffb1236b11e979549d54)](https://circleci.com/gh/igatto/jsonapi-ruby-deserializer/tree/main)&emsp;&emsp;
@@ -129,6 +129,13 @@ document.jsonapi.version
 
 document.jsonapi.to_h
 # => {"version"=>"1.0"}
+```
+
+#### Dynamic resources
+```ruby
+document.data[0].attributes.dynamic_key = 'dynamic_value'
+document.data[0].attributes.dynamic_key
+# => "dynamic_value"
 ```
 
 ## License
